@@ -1,2 +1,0 @@
-Hi Ruby
-Test 1
