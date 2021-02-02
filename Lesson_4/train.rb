@@ -1,7 +1,7 @@
 class Train
 
   attr_reader :number, :type
-  attr_accessor :speed, :wagons, :route, :station
+  attr_accessor :speed, :wagons, :route, :station, :station_index
 
   def initialize(number, type, wagons)
     @number = number
@@ -28,31 +28,40 @@ class Train
 
   def add_route (route)
     self.route = route
-    self.route.stations.first.arrive(self)
-    self.station = 0
+    self.station = self.route.stations.first
+    self.station.arrive(self)
+    self.station_index = 0
   end
 
   def move_forward
-    move(1)
+    if self.route.stations.last != self.station
+      self.station.departure(self)
+      self.station_index += 1
+      self.station = self.route.stations[station_index]
+      self.route.stations[station_index].arrive(self)
+    else
+      puts "Это последняя станция, можно двигаться только назад"
+    end
   end
 
   def move_back
-    move(-1)
+    if self.route.stations.first != self.station
+      self.station.departure(self)
+      self.station_index -= 1
+      self.station = self.route.stations[station_index]
+      self.route.stations[station_index].arrive(self)
+    else
+      puts "Это первая станция, можно двигаться только вперед"
+    end
   end
 
   def information
-    station_read((self.station - 1), "предыдущая станция") if self.station > 0
-    station_read(self.station, "текущая станция")
-    station_read((self.station + 1), "следующая станция")
+    station_read((self.station_index - 1), "предыдущая станция") if self.station_index > 0
+    station_read(self.station_index, "текущая станция")
+    station_read((self.station_index + 1), "следующая станция")
   end
 
   private
-
-  def move(direction)
-    self.route.stations[station].departure(self)
-    self.route.stations[station + direction].arrive(self)
-    self.station += direction
-  end
 
   def station_read(index, text)
     puts "#{text} = #{self.route.stations[index].name}"
