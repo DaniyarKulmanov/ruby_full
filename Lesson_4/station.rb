@@ -7,7 +7,7 @@ class Station
   end
 
   def arrive (train)
-    self.trains << train
+    trains << train
   end
 
   def trains_by_type
@@ -17,12 +17,12 @@ class Station
   end
 
   def departure (train)
-    self.trains.delete(train)
+    trains.delete(train)
   end
 
   def train_info(type)
     count = 0
-    self.trains.each do |train|
+    trains.each do |train|
       count += 1 if train.type == type
     end
     count

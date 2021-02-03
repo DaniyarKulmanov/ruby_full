@@ -23,7 +23,7 @@ class Train
   end
 
   def unhitch_wagon
-    self.wagons -= 1 if speed == 0 && self.wagons > 0
+    self.wagons -= 1 if speed == 0 && wagons > 0
   end
 
   def add_route (route)
