@@ -28,4 +28,4 @@
 .idea/workspace.xml
 
 # ignore seed file
-/Lesson_4/seed.rb
+seed.rb
