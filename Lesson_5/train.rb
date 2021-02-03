@@ -1,12 +1,12 @@
 class Train
 
-  attr_reader :number, :type, :speed, :station
-  attr_accessor :wagons, :route, :station_index
+  attr_reader :number, :type, :speed, :station, :wagons
+  attr_accessor :route, :station_index
 
-  def initialize(number, type, wagons)
+  def initialize(number, type)
     @number = number
     @type = type
-    @wagons = wagons
+    @wagons = []
     @speed = 0
   end
 
@@ -18,12 +18,12 @@ class Train
     self.speed = 0
   end
 
-  def attach_wagon
-    self.wagons += 1 if speed == 0
+  def attach_wagon(wagon)
+    self.wagons << wagon if speed == 0
   end
 
-  def unhitch_wagon
-    self.wagons -= 1 if speed == 0 && wagons > 0
+  def unhitch_wagon(wagon)
+    self.wagons.delete(wagon) if speed == 0 && wagons > 0
   end
 
   def add_route (route)
@@ -59,7 +59,7 @@ class Train
 
   private
   # защите аттрибута от внешнего вмешательства
-  attr_writer :speed, :station
+  attr_writer :speed, :station, :wagons
   # только для внутренних операций
   def station_read(index, text)
     puts "#{text} = #{route.stations[index].name}"
