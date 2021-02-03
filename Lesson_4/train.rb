@@ -28,42 +28,44 @@ class Train
 
   def add_route (route)
     self.route = route
-    self.station = self.route.stations.first
-    self.station.arrive(self)
+    self.station = route.stations.first
+    station.arrive(self)
     self.station_index = 0
   end
 
   def move_forward
-    if self.route.stations.last != self.station
-      self.station.departure(self)
+    if route.stations.last != station
       self.station_index += 1
-      self.station = self.route.stations[station_index]
-      self.route.stations[station_index].arrive(self)
+      travel
     else
       puts "Это последняя станция, можно двигаться только назад"
     end
   end
 
   def move_back
-    if self.route.stations.first != self.station
-      self.station.departure(self)
+    if route.stations.first != station
       self.station_index -= 1
-      self.station = self.route.stations[station_index]
-      self.route.stations[station_index].arrive(self)
+      travel
     else
       puts "Это первая станция, можно двигаться только вперед"
     end
   end
 
   def information
-    station_read((self.station_index - 1), "предыдущая станция") if self.station_index > 0
-    station_read(self.station_index, "текущая станция")
-    station_read((self.station_index + 1), "следующая станция")
+    station_read((station_index - 1), "предыдущая станция") if station_index > 0
+    station_read(station_index, "текущая станция")
+    station_read((station_index + 1), "следующая станция")
   end
 
   private
 
   def station_read(index, text)
-    puts "#{text} = #{self.route.stations[index].name}"
+    puts "#{text} = #{route.stations[index].name}"
+  end
+
+  def travel
+    station.departure(self)
+    self.station = route.stations[station_index]
+    route.stations[station_index].arrive(self)
   end
 end
