@@ -26,3 +26,6 @@
 =======
 .idea/
 .idea/workspace.xml
+
+# ignore seed file
+.seed.rb
