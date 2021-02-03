@@ -23,7 +23,7 @@ class Route
   end
 
   private
-
+  # только для внутренних операций
   def not_first_and_last(station)
     station != stations.first && station != stations.last
   end

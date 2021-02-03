@@ -15,7 +15,7 @@ class Wagon
   end
 
   private
-
+  # во избежании открытия, закрытия дверей напрямую
   attr_writer :open_locks
 
 end

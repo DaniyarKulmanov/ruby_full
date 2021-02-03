@@ -20,6 +20,9 @@ class Station
     trains.delete(train)
   end
 
+  private
+
+  # только для внутренних операций
   def train_info(type)
     count = 0
     trains.each do |train|

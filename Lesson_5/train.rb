@@ -1,7 +1,7 @@
 class Train
 
-  attr_reader :number, :type
-  attr_accessor :speed, :wagons, :route, :station, :station_index
+  attr_reader :number, :type, :speed, :station
+  attr_accessor :wagons, :route, :station_index
 
   def initialize(number, type, wagons)
     @number = number
@@ -58,11 +58,13 @@ class Train
   end
 
   private
-
+  # защите аттрибута от внешнего вмешательства
+  attr_writer :speed, :station
+  # только для внутренних операций
   def station_read(index, text)
     puts "#{text} = #{route.stations[index].name}"
   end
-
+  # только для внутренних операций
   def travel
     station.departure(self)
     self.station = route.stations[station_index]
