@@ -10,10 +10,10 @@ class Station
     trains << train
   end
 
-  def trains_by_type
-    puts "Количество поздов по типу:"
-    puts "Грузовые #{train_info('Cargo')}"
-    puts "Пассажирские #{train_info('Passenger')}"
+  def trains_by_type # TODO
+    # puts "Количество поздов по типу:"
+    # puts "Грузовые #{train_info('Cargo')}"
+    # puts "Пассажирские #{train_info('Passenger')}"
   end
 
   def departure (train)
@@ -24,10 +24,10 @@ class Station
 
   # только для внутренних операций
   def train_info(type)
-    count = 0
-    trains.each do |train|
-      count += 1 if train.type == type
-    end
-    count
+    # count = 0
+    # trains.each do |train|
+    #   count += 1 if train.type == type
+    # end
+    # count
   end
 end
