@@ -23,15 +23,13 @@ class RailWays
                          "3 - Поезда"
     case command
     when 1
-      station_menu paint_menu"Меню станций",
-                          "1 - Создать",
-                          "2 - Просмотр"
+      station_actions paint_menu "Меню станций",
+                                 "1 - Создать",
+                                 "2 - Просмотр"
     when 2
-      route_menu paint_menu "Меню маршрутов",
-                         "1 - Создать",
-                         "2 - Просмотр"
-                 # "3 - Добавить станцию",
-                 # "4 - Удалить станцию"
+      route_actions paint_menu "Меню маршрутов",
+                               "1 - Создать",
+                               "2 - Просмотр"
 
     when 3
       train_menu paint_menu "Меню поездов",
@@ -61,8 +59,8 @@ class RailWays
     command
   end
 
-  def station_menu(command)
-    puts "station_menu #{command}"
+  # stations ========
+  def station_actions(command)
     station_create if command == 1
     stations_display if  command == 2
     main_menu if command == 0
@@ -72,22 +70,49 @@ class RailWays
     puts "Введите имя станции"
     name = gets.chomp
     self.stations << Station.new(name)
-    station_menu paint_menu"Меню станций",
-                           "1 - Создать",
-                           "2 - Просмотр"
+    station_actions paint_menu "Меню станций", "1 - Создать", "2 - Просмотр"
   end
 
   def stations_display
-    puts "Список станций:"
-    stations.each_with_index do |station, index|
-      puts "#{index + 1} - #{station.name}"
-    end
-    station_menu paint_menu"Меню станций",
-                           "1 - Создать",
-                           "2 - Просмотр"
+    stations_list
+    station_actions paint_menu"Меню станций","1 - Создать","2 - Просмотр"
   end
 
-  def route_menu(command)
+  def stations_list
+    puts "Список станций:"
+    stations.each_with_index do |station, index|
+      puts "#{index} - #{station.name}"
+    end
+  end
+  # stations ========
+
+  # routes ========
+  def route_actions(command)
+    route_create if command == 1
+    routes_display if  command == 2
+    main_menu if command == 0
+  end
+  # routes ========
+
+  def route_create
+    puts "Выберите начальную станцию"
+    stations_list
+    index = gets.chomp.to_i
+    first_station = stations[index]
+
+    puts "Выберите конечную станцию"
+    stations_list
+    index = gets.chomp.to_i
+    last_station = stations[index]
+
+    routes << Route.new(first_station, last_station)
+    route_actions paint_menu "Меню маршрутов",
+                             "1 - Создать",
+                             "2 - Просмотр"
+  end
+
+  def routes_display
+
   end
 
   def train_menu(command)
