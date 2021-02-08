@@ -36,10 +36,7 @@ class RailWays
     loop do
       puts list_actions
       input = gets.chomp
-      if input == '0'
-        command = input.to_i
-        break
-      elsif input.to_i < list_actions.size - 1
+      if input == '0' || input.to_i < list_actions.size - 1
         command = input.to_i
         break
       end
@@ -141,9 +138,85 @@ class RailWays
 
   # routes ========
   def train_actions(command)
-
+    train_create if command == 1
+    train_display if command == 2
+    train_route if command == 3
+    train_add_wagon if command == 4
+    train_del_wagon if command == 5
+    train_travel_forward if command == 6
+    train_travel_back if command == 7
     main_menu if command == 0
   end
+
+  def train_create
+    puts "Введите номер поезда"
+    number = gets.chomp
+    puts TRAIN_TYPE
+    type = gets.chomp.to_i
+    trains << CargoTrain.new(number) if type == 1
+    trains << PassengerTrain.new(number) if type == 2
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_display
+    train_list
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_list
+    puts "Список поездов:"
+    trains.each_with_index do |train, index|
+      puts "#{index} - #{train.number} тип  #{train.class.to_s}"
+      puts "текущая станция #{train.station.name}" unless train.station.nil?
+      puts "вагонов -> #{train.wagons.size}"
+    end
+  end
+
+  def train_route #TODO проверка на ввод?
+    train_list
+    train_index = gets.chomp.to_i
+    routes_list
+    route_index = gets.chomp.to_i
+    trains[train_index].add_route(routes[route_index])
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_add_wagon
+    train_list
+    train_index = gets.chomp.to_i
+    wagon_list
+    wagon_index = gets.chomp.to_i
+    trains[train_index].attach_wagon(wagons[wagon_index])
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_del_wagon
+    train_list
+    train_index = gets.chomp.to_i
+    trains[train_index].unhitch_wagon
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_travel_forward
+    train_list
+    train_index = gets.chomp.to_i
+    trains[train_index].move_forward
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_travel_back
+    train_list
+    train_index = gets.chomp.to_i
+    trains[train_index].move_back
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  # wagons ========
+  def wagon_list
+    puts "Список вагонов"
+    wagons.each_with_index { |wagon, index| puts "#{index} - #{wagon.manufacturer}" }
+  end
+  # wagons ========
 
   def seed
     stations << Station.new('Astana')
@@ -151,7 +224,11 @@ class RailWays
     stations << Station.new('Balhash')
     routes << Route.new(stations[0], stations[1])
     routes[0].add_station(stations[-1])
-    train1 = CargoTrain.new 'TRAIN-AAA-1'
-    train1.add_route(routes[0])
+    trains << CargoTrain.new('TRAIN-AAA-1')
+    trains << CargoTrain.new('TRAIN-SS-1')
+    trains[0].add_route(routes[0])
+    10.times { wagons << CargoWagon.new('China') }
+    10.times { wagons << PassengerWagon.new('Kazakhstan') }
+    trains[0].attach_wagon(wagons.first)
   end
 end

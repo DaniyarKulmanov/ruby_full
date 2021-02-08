@@ -21,8 +21,8 @@ class Train
     self.wagons << wagon if speed == 0
   end
 
-  def unhitch_wagon(wagon)
-    self.wagons.delete(wagon) if speed == 0 && wagons > 0
+  def unhitch_wagon
+    self.wagons.delete_at(-1) if speed == 0 && wagons.size > 0
   end
 
   def add_route (route)
@@ -33,7 +33,7 @@ class Train
   end
 
   def move_forward
-    if route.stations.last != station
+    if route.stations.last != station && route != nil
       self.station_index += 1
       travel
     else
@@ -42,7 +42,7 @@ class Train
   end
 
   def move_back
-    if route.stations.first != station
+    if route.stations.first != station && route != nil
       self.station_index -= 1
       travel
     else

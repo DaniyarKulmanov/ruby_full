@@ -6,7 +6,7 @@ class PassengerTrain < Train
     if wagon.class == PassengerWagon
       super(wagon)
     else
-      puts 'Только пассажирские вагоны'
+      puts 'Можно прицепить только пассажирский вагон'
     end
   end
   
