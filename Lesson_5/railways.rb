@@ -43,6 +43,19 @@ class RailWays
     command
   end
 
+  def choose_from(variant, list)
+    index = nil
+    loop do
+      stations_list if variant == 'Stations'
+      routes_list if variant == 'Routes'
+      train_list if variant == 'Trains'
+      wagon_list if variant == 'Wagons'
+      index = gets.chomp.to_i
+      break unless list[index].nil?
+    end
+    list[index]
+  end
+
   def station_actions(command)
     station_create if command == 1
      if command == 2
@@ -87,17 +100,6 @@ class RailWays
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  def choose_from(variant, list)
-    index = nil
-    loop do
-      stations_list if variant == 'Stations'
-      routes_list if variant == 'Routes'
-      index = gets.chomp.to_i
-      break unless list[index].nil?
-    end
-    list[index]
-  end
-
   def routes_list
     puts "Выбрать маршрут:"
     routes.each_with_index do |route, index|
@@ -124,11 +126,13 @@ class RailWays
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  # routes ========
   def train_actions(command)
     train_create if command == 1
-    train_display if command == 2
-    train_route if command == 3
+    if command == 2
+      train_list
+      train_actions(paint_menu TRAIN_MENU)
+    end
+    train_add_route if command == 3
     train_add_wagon if command == 4
     train_del_wagon if command == 5
     train_travel_forward if command == 6
@@ -146,11 +150,6 @@ class RailWays
     train_actions(paint_menu TRAIN_MENU)
   end
 
-  def train_display
-    train_list
-    train_actions(paint_menu TRAIN_MENU)
-  end
-
   def train_list
     puts "Список поездов:"
     trains.each_with_index do |train, index|
@@ -160,51 +159,48 @@ class RailWays
     end
   end
 
-  def train_route #TODO проверка на ввод?
-    train_list
-    train_index = gets.chomp.to_i
-    routes_list
-    route_index = gets.chomp.to_i
-    trains[train_index].add_route(routes[route_index])
+  def train_add_route
+    puts "Выберите поезд"
+    train = choose_from('Trains', trains)
+    puts "Выберите маршрут"
+    route = choose_from('Routes', routes)
+    train.add_route(route)
     train_actions(paint_menu TRAIN_MENU)
   end
 
   def train_add_wagon
-    train_list
-    train_index = gets.chomp.to_i
-    wagon_list
-    wagon_index = gets.chomp.to_i
-    trains[train_index].attach_wagon(wagons[wagon_index])
+    puts "Выберите поезд"
+    train = choose_from('Trains', trains)
+    wagon = choose_from('Wagons', wagons)
+    train.attach_wagon(wagon)
     train_actions(paint_menu TRAIN_MENU)
   end
 
   def train_del_wagon
-    train_list
-    train_index = gets.chomp.to_i
-    trains[train_index].unhitch_wagon
+    puts "Выберите поезд"
+    train = choose_from('Trains', trains)
+    train.unhitch_wagon
     train_actions(paint_menu TRAIN_MENU)
   end
 
   def train_travel_forward
-    train_list
-    train_index = gets.chomp.to_i
-    trains[train_index].move_forward
+    puts "Выберите поезд"
+    train = choose_from('Trains', trains)
+    train.move_forward
     train_actions(paint_menu TRAIN_MENU)
   end
 
   def train_travel_back
-    train_list
-    train_index = gets.chomp.to_i
-    trains[train_index].move_back unless trains[train_index].nil?
+    puts "Выберите поезд"
+    train = choose_from('Trains', trains)
+    train.move_back
     train_actions(paint_menu TRAIN_MENU)
   end
 
-  # wagons ========
   def wagon_list
     puts "Список вагонов"
     wagons.each_with_index { |wagon, index| puts "#{index} - #{wagon.manufacturer}" }
   end
-  # wagons ========
 
   def seed
     stations << Station.new('Astana')

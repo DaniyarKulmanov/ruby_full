@@ -22,7 +22,11 @@ class Train
   end
 
   def unhitch_wagon
-    self.wagons.delete_at(-1) if speed == 0 && wagons.size > 0
+    if speed == 0 && wagons.size > 0
+      self.wagons.delete_at(-1)
+    elsif wagons.size <= 0
+      puts 'Нет Вагонов для отцепления'
+    end
   end
 
   def add_route (route)
