@@ -31,16 +31,15 @@ class RailWays
 
   attr_writer :routes, :stations, :trains, :wagons
 
-  def paint_menu (header)
+  def paint_menu(list_actions)
     command = 0
     loop do
-      # system('clear')
-      puts header
+      puts list_actions
       input = gets.chomp
       if input == '0'
         command = input.to_i
         break
-      elsif input.to_i.between?(1,4)
+      elsif input.to_i < list_actions.size - 1
         command = input.to_i
         break
       end
@@ -142,6 +141,8 @@ class RailWays
 
   # routes ========
   def train_actions(command)
+
+    main_menu if command == 0
   end
 
   def seed
