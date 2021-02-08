@@ -103,8 +103,8 @@ class RailWays
   def routes_list
     puts "Выбрать маршрут:"
     routes.each_with_index do |route, index|
-      puts "#{index} - Станции маршрута:"
-      route.stations.each {|station| puts "-> #{station.name}"}
+      puts "#{index} - Маршрут #{route.first_station.name} - #{route.last_station.name}:"
+      route.print_stations
     end
   end
 

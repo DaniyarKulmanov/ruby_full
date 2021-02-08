@@ -1,12 +1,20 @@
 class Route
-  attr_reader :stations
+  attr_reader :stations, :first_station, :last_station
 
   def initialize(first, last)
-    @stations = [first, last]
+    @first_station = first
+    @last_station = last
+    @stations = []
+    @stations << first_station
+    @stations << last_station
   end
 
   def add_station (station)
-    stations.insert(-2, station)
+    if stations.include? station
+      puts "Станция уже есть в маршруте"
+    else
+      stations.insert(-2, station)
+    end
   end
 
   def remove_station (station)
@@ -19,7 +27,7 @@ class Route
 
   def print_stations
     puts "Станции маршрута:"
-    stations.each_with_index{|value,index| puts "#{index + 1} = #{value}" }
+    stations.each { |station| puts "-> #{station.name}" }
   end
 
   private
