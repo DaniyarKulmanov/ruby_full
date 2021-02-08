@@ -7,7 +7,6 @@ require_relative 'station'
 require_relative 'menu_texts'
 
 class RailWays
-  #TODO создать констатны под тексты
   attr_reader :routes, :stations, :trains, :wagons
 
   def initialize
@@ -44,10 +43,9 @@ class RailWays
     command
   end
 
-  # stations ========
   def station_actions(command)
     station_create if command == 1
-    stations_display if  command == 2
+    stations_list if  command == 2
     main_menu if command == 0
   end
 
@@ -58,23 +56,18 @@ class RailWays
     station_actions(paint_menu STATION_MENU)
   end
 
-  def stations_display
-    stations_list
-    station_actions(paint_menu STATION_MENU)
-  end
-
   def stations_list
     puts "Список станций:"
     stations.each_with_index do |station, index|
-      puts "#{index} - #{station.name}"
+      puts "#{index} - #{station.name} поезда:"
+      station.trains.each_with_index {|train, train_index| puts" #{train_index} -> #{train.number}"}
     end
+    station_actions(paint_menu STATION_MENU)
   end
-  # stations ========
 
-  # routes ========
   def route_actions(command)
     route_create if command == 1
-    routes_display if command == 2
+    routes_list if command == 2
     routes_add_station if command == 3
     routes_del_station if command == 4
     main_menu if command == 0
@@ -82,22 +75,21 @@ class RailWays
 
   def route_create
     puts "Выберите начальную станцию"
-    stations_list
-    index = gets.chomp.to_i
-    first_station = stations[index]
-
+    first_station = choose_station
     puts "Выберите конечную станцию"
-    stations_list
-    index = gets.chomp.to_i
-    last_station = stations[index]
-
+    last_station = choose_station
     routes << Route.new(first_station, last_station)
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  def routes_display
-    routes_list
-    route_actions(paint_menu ROUTE_MENU)
+  def choose_station
+    index = nil
+    loop do
+      stations_list
+      index = gets.chomp.to_i
+      break unless stations[index].nil?
+    end
+    stations[index]
   end
 
   def routes_list
@@ -105,8 +97,8 @@ class RailWays
     routes.each_with_index do |route, index|
       puts "#{index} - Станции маршрута:"
       route.stations.each {|station| puts "-> #{station.name}"}
-      #TODO список поездов на стнации
     end
+    route_actions(paint_menu ROUTE_MENU)
   end
 
   def routes_add_station
