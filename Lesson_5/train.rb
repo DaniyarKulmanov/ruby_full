@@ -33,18 +33,22 @@ class Train
   end
 
   def move_forward
-    if route.stations.last != station && route != nil
+    if route != nil && route.stations.last != station
       self.station_index += 1
       travel
+    elsif route.nil?
+      puts "Сначала назначьте маршут поезду"
     else
       puts "Это последняя станция, можно двигаться только назад"
     end
   end
 
   def move_back
-    if route.stations.first != station && route != nil
+    if route != nil && route.stations.first != station
       self.station_index -= 1
       travel
+    elsif route.nil?
+      puts "Сначала назначьте маршут поезду"
     else
       puts "Это первая станция, можно двигаться только вперед"
     end

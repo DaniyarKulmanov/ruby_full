@@ -207,7 +207,7 @@ class RailWays
   def train_travel_back
     train_list
     train_index = gets.chomp.to_i
-    trains[train_index].move_back
+    trains[train_index].move_back unless trains[train_index].nil?
     train_actions(paint_menu TRAIN_MENU)
   end
 
