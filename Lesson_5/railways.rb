@@ -45,7 +45,10 @@ class RailWays
 
   def station_actions(command)
     station_create if command == 1
-    stations_list if  command == 2
+     if command == 2
+       stations_list
+       station_actions(paint_menu STATION_MENU)
+     end
     main_menu if command == 0
   end
 
@@ -62,12 +65,14 @@ class RailWays
       puts "#{index} - #{station.name} поезда:"
       station.trains.each_with_index {|train, train_index| puts" #{train_index} -> #{train.number}"}
     end
-    station_actions(paint_menu STATION_MENU)
   end
 
   def route_actions(command)
     route_create if command == 1
-    routes_list if command == 2
+    if command == 2
+      routes_list
+      route_actions(paint_menu ROUTE_MENU)
+    end
     routes_add_station if command == 3
     routes_del_station if command == 4
     main_menu if command == 0
@@ -75,21 +80,22 @@ class RailWays
 
   def route_create
     puts "Выберите начальную станцию"
-    first_station = choose_station
+    first_station = choose_from('Stations', stations)
     puts "Выберите конечную станцию"
-    last_station = choose_station
+    last_station = choose_from('Stations', stations)
     routes << Route.new(first_station, last_station)
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  def choose_station
+  def choose_from(variant, list)
     index = nil
     loop do
-      stations_list
+      stations_list if variant == 'Stations'
+      routes_list if variant == 'Routes'
       index = gets.chomp.to_i
-      break unless stations[index].nil?
+      break unless list[index].nil?
     end
-    stations[index]
+    list[index]
   end
 
   def routes_list
@@ -98,33 +104,23 @@ class RailWays
       puts "#{index} - Станции маршрута:"
       route.stations.each {|station| puts "-> #{station.name}"}
     end
-    route_actions(paint_menu ROUTE_MENU)
   end
 
   def routes_add_station
     puts "Выберите маршрут куда хотите добавить станцию:"
-    routes_list
-    route_index = gets.chomp.to_i
-
+    route = choose_from('Routes', routes)
     puts "Какую станцию добавить"
-    stations_list
-    station_index = gets.chomp.to_i
-
-    routes[route_index].add_station(stations[station_index])
+    station = choose_from('Stations', stations)
+    route.add_station(station)
     route_actions(paint_menu ROUTE_MENU)
   end
 
   def routes_del_station
     puts "Выберите маршрут где хотите удалить станцию:"
-    routes_list
-    route_index = gets.chomp.to_i
-
+    route = choose_from('Routes', routes)
     puts "Какую станцию удалить"
-    routes[route_index].stations.each_with_index { |station, index| puts"#{index} - #{station.name}" }
-    station_index = gets.chomp.to_i
-    station_to_delete = routes[route_index].stations[station_index]
-
-    routes[route_index].remove_station(station_to_delete)
+    station = choose_from('Stations', stations)
+    route.remove_station(station)
     route_actions(paint_menu ROUTE_MENU)
   end
 
