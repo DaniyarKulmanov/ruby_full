@@ -1,12 +1,13 @@
 class Train
 
-  attr_reader :number,:speed, :station, :wagons
+  attr_reader :number,:speed, :station, :wagons, :wagon_type
   attr_accessor :route, :station_index
 
-  def initialize(number)
+  def initialize(number, wagon_type = 'standard')
     @number = number
     @wagons = []
     @speed = 0
+    @wagon_type = wagon_type
   end
 
   def speed_up
@@ -18,7 +19,11 @@ class Train
   end
 
   def attach_wagon(wagon)
-    self.wagons << wagon if speed == 0
+    if speed == 0 && wagon_type == wagon.type
+      self.wagons << wagon
+    else
+      puts "Остановите поезд и прицепить можно только вагоны = #{wagon_type}"
+    end
   end
 
   def unhitch_wagon

@@ -1,4 +1,4 @@
-class Train
+class TrainOld
 
   attr_reader :number, :type
   attr_accessor :speed, :wagons, :route, :station, :station_index

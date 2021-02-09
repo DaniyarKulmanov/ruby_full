@@ -1,8 +1,9 @@
 class Wagon
-  attr_reader :manufacturer, :open_locks
+  attr_reader :manufacturer, :open_locks, :type
 
-  def initialize(manufacturer)
+  def initialize(manufacturer, type = 'standard')
     @manufacturer = manufacturer
+    @type = type
     close_doors
   end
 
