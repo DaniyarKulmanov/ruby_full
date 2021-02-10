@@ -1,4 +1,8 @@
+require_relative 'manufacturer'
+
 class Train
+  include Manufacturer
+
   attr_reader :number,:speed, :station, :wagons, :wagon_type
   attr_accessor :route, :station_index
 
