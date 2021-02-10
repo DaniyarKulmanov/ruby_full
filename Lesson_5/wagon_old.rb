@@ -1,4 +1,4 @@
-class Wagon
+class WagonOld
   attr_reader :manufacturer, :open_locks, :type
 
   def initialize(manufacturer, type = 'standard')
