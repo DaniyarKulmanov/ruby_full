@@ -1,4 +1,7 @@
+require_relative 'instance_counter'
+
 class Wagon
+  include InstanceCounter
   include Manufacturer
 
   attr_reader :open_locks, :type
@@ -6,6 +9,7 @@ class Wagon
   def initialize(type = 'standard')
     @type = type
     close_doors
+    register_instance
   end
 
   def open_doors

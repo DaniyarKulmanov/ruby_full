@@ -211,8 +211,8 @@ class RailWays
     trains << CargoTrain.new('TRAIN-AAA-1')
     trains << CargoTrain.new('TRAIN-SS-1')
     trains[0].add_route(routes[0])
-    10.times { wagons << CargoWagon.new('China') }
-    10.times { wagons << PassengerWagon.new('Kazakhstan') }
+    7.times { wagons << CargoWagon.new('China') }
+    6.times { wagons << PassengerWagon.new('Kazakhstan') }
     trains[0].attach_wagon(wagons.first)
   end
 end
