@@ -7,7 +7,7 @@ module InstanceCounter
     attr_accessor :instances_count
 
     def instances
-      puts instances_count
+      instances_count
     end
   end
 
