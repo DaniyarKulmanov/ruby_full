@@ -16,6 +16,5 @@ module InstanceCounter
   def register_instance
     self.class.instances_count ||= 0
     self.class.instances_count += 1
-    puts "hi module #{self.class.instances_count}"
   end
 end

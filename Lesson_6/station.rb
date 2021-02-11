@@ -22,10 +22,15 @@ class Station
     trains << train
   end
 
-  def trains_by_type # TODO
-    # puts "Количество поздов по типу:"
-    # puts "Грузовые #{train_info('Cargo')}"
-    # puts "Пассажирские #{train_info('Passenger')}"
+  def trains_by_type
+    puts 'Грузовые поезда:'
+    trains.select do |train|
+      puts train.number if train.class == CargoTrain
+    end
+    puts 'Пассажирские поезда:'
+    trains.select do |train|
+      puts train.number if train.class == PassengerTrain
+    end
   end
 
   def departure (train)
