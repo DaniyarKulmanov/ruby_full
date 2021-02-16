@@ -66,9 +66,16 @@ class RailWays
   end
 
   def station_create
+    attempt ||= 3
     puts "Введите имя станции"
     name = gets.chomp
     self.stations << Station.new(name)
+    puts "Станция #{self.stations[-1].name} создана"
+    station_actions(paint_menu STATION_MENU)
+  rescue RuntimeError => e
+    attempt -= 1
+    puts "#{e.message}, осталось попыток #{attempt}"
+    retry if attempt > 0
     station_actions(paint_menu STATION_MENU)
   end
 
