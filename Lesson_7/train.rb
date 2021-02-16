@@ -93,13 +93,13 @@ class Train
   end
 
   private
-  # защите аттрибута от внешнего вмешательства
+
   attr_writer :speed, :station, :wagons
-  # только для внутренних операций
+
   def station_read(index, text)
     puts "#{text} = #{route.stations[index].name}"
   end
-  # только для внутренних операций
+
   def travel
     station.departure(self)
     self.station = route.stations[station_index]

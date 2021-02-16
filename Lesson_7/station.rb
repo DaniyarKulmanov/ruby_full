@@ -3,6 +3,8 @@ require_relative 'instance_counter'
 class Station
   include InstanceCounter
 
+  FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/
+
   attr_reader :name, :trains
 
   @@stations = []
@@ -13,6 +15,7 @@ class Station
 
   def initialize (name)
     @name = name
+    validate!
     @trains = []
     @@stations << self
     register_instance
@@ -37,14 +40,16 @@ class Station
     trains.delete(train)
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
   private
 
-  # только для внутренних операций
-  def train_info(type)
-    # count = 0
-    # trains.each do |train|
-    #   count += 1 if train.type == type
-    # end
-    # count
+  def validate!
+    raise 'Не верный формат: только кириллица, цифры, длинна от 3 - 80 символов' if name !~ FORMAT
   end
 end
