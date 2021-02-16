@@ -5,8 +5,10 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  attr_reader :number,:speed, :station, :wagons, :wagon_type
-  attr_accessor :route, :station_index
+  FORMAT = /^([а-я]|\d){3}[-]*([а-я]|\d){2}$/i
+
+  attr_reader :speed, :station, :wagons, :wagon_type
+  attr_accessor :number, :route, :station_index
 
   @@trains = []
 
@@ -16,6 +18,7 @@ class Train
 
   def initialize(number, wagon_type = 'standard')
     @number = number
+    validate!
     @wagons = []
     @speed = 0
     @wagon_type = wagon_type
@@ -82,6 +85,13 @@ class Train
     station_read((station_index + 1), "следующая станция")
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
   private
   # защите аттрибута от внешнего вмешательства
   attr_writer :speed, :station, :wagons
@@ -94,5 +104,9 @@ class Train
     station.departure(self)
     self.station = route.stations[station_index]
     route.stations[station_index].arrive(self)
+  end
+
+  def validate!
+    raise 'Не верный формат позда ХХХ-ХХ' if number !~ FORMAT
   end
 end
