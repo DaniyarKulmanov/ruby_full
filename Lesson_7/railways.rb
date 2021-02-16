@@ -148,12 +148,19 @@ class RailWays
   end
 
   def train_create
+    attempt ||= 3
     puts "Введите номер поезда"
     number = gets.chomp
     puts TRAIN_TYPE
     type = gets.chomp.to_i
     trains << CargoTrain.new(number) if type == 1
     trains << PassengerTrain.new(number) if type == 2
+    puts "Поезд #{trains[-1].number} создан"
+    train_actions(paint_menu TRAIN_MENU)
+  rescue RuntimeError => e
+    attempt -= 1
+    puts "#{e.message}, осталось попыток #{attempt}"
+    retry if attempt > 0
     train_actions(paint_menu TRAIN_MENU)
   end
 
