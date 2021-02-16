@@ -1,6 +1,6 @@
 require_relative 'instance_counter'
 
-class WagonOld6
+class Wagon
   include InstanceCounter
   include Manufacturer
 

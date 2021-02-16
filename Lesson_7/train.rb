@@ -1,7 +1,7 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 
-class TrainOld6
+class Train
   include Manufacturer
   include InstanceCounter
 
