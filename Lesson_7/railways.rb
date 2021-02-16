@@ -203,16 +203,16 @@ class RailWays
   end
 
   def seed
-    stations << Station.new('Astana')
-    stations << Station.new('Almaty')
-    stations << Station.new('Balhash')
+    stations << Station.new('Астана')
+    stations << Station.new('Алматы')
+    stations << Station.new('Балхаш')
     routes << Route.new(stations[0], stations[1])
     routes[0].add_station(stations[-1])
-    trains << CargoTrain.new('TRAIN-AAA-1')
-    trains << CargoTrain.new('TRAIN-SS-1')
+    trains << CargoTrain.new('ППШ-16')
+    trains << CargoTrain.new('АТА12')
     trains[0].add_route(routes[0])
-    7.times { wagons << CargoWagon.new('China') }
-    6.times { wagons << PassengerWagon.new('Kazakhstan') }
+    7.times { wagons << CargoWagon.new('cargo') }
+    6.times { wagons << PassengerWagon.new('passenger') }
     trains[0].attach_wagon(wagons.first)
   end
 end
