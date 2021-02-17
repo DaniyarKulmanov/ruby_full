@@ -5,8 +5,8 @@ class PassengerWagon < Wagon
   attr_reader :seats, :occupied_seats, :free_seats
 
   def initialize(seats, type = 'Passenger')
-    super(type)
     @seats, @free_seats = seats, seats
+    super(type)
     @occupied_seats = 0
     validate!
   end
@@ -23,6 +23,7 @@ class PassengerWagon < Wagon
 
   def validate!
     super
+    raise "Места в вагоне должны быть числом, Вы указали = #{seats.class}" if seats.class != Integer
     raise "Места в вагоне не могут быть равны нулю, Вы указали = #{seats}" if seats == 0
     raise "Нельзя больше занять места, свободные места = #{free_seats}" if free_seats == 0
   end
