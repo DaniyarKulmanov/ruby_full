@@ -1,6 +1,6 @@
-require_relative 'wagon'
+require_relative 'wagon_old7'
 
-class PassengerWagon < Wagon
+class PassengerWagon < WagonOld7
   def initialize(type = 'Passenger')
     super
   end
