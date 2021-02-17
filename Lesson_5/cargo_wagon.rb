@@ -1,6 +1,6 @@
 require_relative 'wagon_old'
 
-class CargoWagon < WagonOld
+class CargoWagonOld5 < WagonOld
   def initialize(manufacturer, type = 'Cargo')
     super
   end

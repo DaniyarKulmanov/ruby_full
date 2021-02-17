@@ -6,7 +6,7 @@ require_relative 'route'
 require_relative 'station'
 require_relative 'menu_texts'
 
-class RailWays
+class RailWaysOld7
   attr_reader :routes, :stations, :trains, :wagons
 
   def initialize

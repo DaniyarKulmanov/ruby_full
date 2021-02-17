@@ -1,6 +1,6 @@
 require_relative 'instance_counter'
 
-class Station
+class StationOld7
   include InstanceCounter
 
   FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/

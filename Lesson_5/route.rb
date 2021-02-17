@@ -1,4 +1,4 @@
-class Route
+class RouteOld5
   attr_reader :stations, :first_station, :last_station
 
   def initialize(first, last)
