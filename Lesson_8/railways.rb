@@ -216,7 +216,7 @@ class RailWays
     wagons.each_with_index { |wagon, index| puts "#{index} - #{wagon.manufacturer}" }
   end
 
-  def seed
+  def seed #TODO классы смотрят в старые папки(переименовать там их)
     stations << Station.new('Астана')
     stations << Station.new('Алматы')
     stations << Station.new('Балхаш')
