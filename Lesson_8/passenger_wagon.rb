@@ -6,8 +6,8 @@ class PassengerWagon < Wagon
 
   def initialize(seats, type = 'Passenger')
     @seats, @free_seats = seats, seats
-    super(type)
     @occupied_seats = 0
+    super(type)
     validate!
   end
 
