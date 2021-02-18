@@ -57,12 +57,13 @@ class RailWays
     list[index]
   end
 
-  def station_actions(command)
+  def station_actions(command) #TODO добавить просмотр поездов через метод-блок
     station_create if command == 1
      if command == 2
        stations_list
        station_actions(paint_menu STATION_MENU)
      end
+    station_trains_display if command == 3
     main_menu if command == 0
   end
 
@@ -86,6 +87,14 @@ class RailWays
       puts "#{index} - #{station.name} поезда:"
       station.trains.each_with_index {|train, train_index| puts" #{train_index} -> #{train.number}"}
     end
+  end
+
+  def station_trains_display
+    puts 'Выберите станцию'
+    station = choose_from('Stations', stations)
+    puts "Список поездов на станции #{station.name}:"
+    station.all_trains { |train| puts "Номер поезда - #{train.number}, вагонов #{train.wagons.size}" }
+    station_actions(paint_menu STATION_MENU)
   end
 
   def route_actions(command)
@@ -134,7 +143,7 @@ class RailWays
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  def train_actions(command)
+  def train_actions(command) #TODO добавить просмотр вагонов через метод-блок
     train_create if command == 1
     if command == 2
       train_list
@@ -145,6 +154,7 @@ class RailWays
     train_del_wagon if command == 5
     train_travel_forward if command == 6
     train_travel_back if command == 7
+    train_wagons_display if command == 8
     main_menu if command == 0
   end
 
@@ -209,6 +219,16 @@ class RailWays
     puts "Выберите поезд"
     train = choose_from('Trains', trains)
     train.move_back
+    train_actions(paint_menu TRAIN_MENU)
+  end
+
+  def train_wagons_display
+    puts 'Выберите поезд'
+    train = choose_from('Trains', trains )
+    puts "Список вагонов поезда #{train.number}:"
+    train.all_wagons do |wagon , index|
+      puts "#{index} тип #{wagon.type}, вместимость #{wagon.capacity}, свободный объем #{wagon.free_capacity}"
+    end
     train_actions(paint_menu TRAIN_MENU)
   end
 
