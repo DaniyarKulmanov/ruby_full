@@ -47,6 +47,17 @@ class Station
     false
   end
 
+  def all_trains
+    trains.each do |train|
+      if block_given?
+        yield(train)
+      else
+        puts "no block given"
+        break
+      end
+    end
+  end
+
   private
 
   def validate!
