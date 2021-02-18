@@ -257,6 +257,9 @@ class RailWays
       puts "Вы выбрали не верный тип вагона = #{wagon.type}"
     end
     wagon_actions(paint_menu WAGON_MENU)
+  rescue RuntimeError => e
+    puts e.message
+    wagon_actions(paint_menu WAGON_MENU)
   end
 
   def passenger_wagon_create
@@ -277,6 +280,9 @@ class RailWays
     else
       puts "Вы выбрали не верный тип вагона = #{wagon.type}"
     end
+    wagon_actions(paint_menu WAGON_MENU)
+  rescue RuntimeError => e
+    puts e.message
     wagon_actions(paint_menu WAGON_MENU)
   end
 
