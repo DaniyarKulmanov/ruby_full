@@ -245,7 +245,7 @@ class RailWays
     puts "Вагон #{wagons[-1].type} создан, объем = #{wagons[-1].capacity}"
   end
 
-  def cargo_wagon_reserve_capacity #TODO защита от минусового объема в классе вагона
+  def cargo_wagon_reserve_capacity
     puts "Выберите вагон типа cargo!"
     wagon = choose_from('Wagons', wagons)
     if wagon.type == 'cargo'
@@ -269,7 +269,7 @@ class RailWays
     puts "Вагон #{wagons[-1].type} создан, мест = #{wagons[-1].seats}"
   end
 
-  def passenger_wagon_reserve_seats #TODO защита от минусового объема мест в классе вагона
+  def passenger_wagon_reserve_seats
     puts "Выберите вагон типа passenger!"
     wagon = choose_from('Wagons', wagons)
     if wagon.type == 'passenger'
