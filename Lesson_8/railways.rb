@@ -23,6 +23,7 @@ class RailWays
     when 1 then station_actions(paint_menu STATION_MENU)
     when 2 then route_actions(paint_menu ROUTE_MENU)
     when 3 then train_actions(paint_menu TRAIN_MENU)
+    when 4 then wagon_actions(paint_menu WAGON_MENU)
     end
   end
 
@@ -151,7 +152,7 @@ class RailWays
     attempt ||= 3
     puts "Введите номер поезда"
     number = gets.chomp
-    puts TRAIN_TYPE
+    puts TRAIN_WAGON_TYPE
     type = gets.chomp.to_i
     trains << CargoTrain.new(number) if type == 1
     trains << PassengerTrain.new(number) if type == 2
@@ -211,9 +212,49 @@ class RailWays
     train_actions(paint_menu TRAIN_MENU)
   end
 
+  def wagon_actions(command)
+    wagon_create if command == 1
+    if command == 2
+      wagon_list
+      wagon_actions(paint_menu WAGON_MENU)
+    end
+    # reserve_capacity if command == 3
+    # reserve_seat if command == 4
+    main_menu if command == 0
+  end
+
+  def wagon_create
+    attempt ||= 3
+    puts "Какой вагон создать"
+    puts TRAIN_WAGON_TYPE
+    type = gets.chomp.to_i
+    cargo_wagon_create if type == 1
+    passenger_wagon_create if type == 2
+    wagon_actions(paint_menu WAGON_MENU)
+  rescue RuntimeError => e
+    attempt -= 1
+    puts "#{e.message}, осталось попыток #{attempt}"
+    retry if attempt > 0
+    wagon_actions(paint_menu WAGON_MENU)
+  end
+
+  def cargo_wagon_create
+    puts "Укажите объем"
+    value = gets.chomp.to_i
+    self.wagons << CargoWagon.new( value )
+    puts "Вагон #{wagons[-1].type} создан, объем = #{wagons[-1].capacity}"
+  end
+
+  def passenger_wagon_create
+    puts "Укажите количество мест"
+    value = gets.chomp.to_i
+    self.wagons << PassengerWagon.new( value )
+    puts "Вагон #{wagons[-1].type} создан, мест = #{wagons[-1].seats}"
+  end
+
   def wagon_list
     puts "Список вагонов"
-    wagons.each_with_index { |wagon, index| puts "#{index} - #{wagon.manufacturer}" }
+    wagons.each_with_index { |wagon, index| puts "#{index} - тип:#{wagon.type}" }
   end
 
   def seed #TODO классы смотрят в старые папки(переименовать там их)
@@ -223,10 +264,12 @@ class RailWays
     routes << Route.new(stations[0], stations[1])
     routes[0].add_station(stations[-1])
     trains << CargoTrain.new('ППШ-16')
-    trains << CargoTrain.new('АТА12')
+    trains << PassengerTrain.new('АТА12')
     trains[0].add_route(routes[0])
     7.times { wagons << CargoWagon.new( rand(100..500),'cargo') }
     6.times { wagons << PassengerWagon.new( rand(300), 'passenger') }
-    trains[0].attach_wagon(wagons.first)
+    trains.each do |train|
+      wagons.each {|wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type}
+    end
   end
 end
