@@ -225,7 +225,7 @@ class RailWays
     trains << CargoTrain.new('ППШ-16')
     trains << CargoTrain.new('АТА12')
     trains[0].add_route(routes[0])
-    7.times { wagons << CargoWagon.new( rand(500),'cargo') }
+    7.times { wagons << CargoWagon.new( rand(100..500),'cargo') }
     6.times { wagons << PassengerWagon.new( rand(300), 'passenger') }
     trains[0].attach_wagon(wagons.first)
   end

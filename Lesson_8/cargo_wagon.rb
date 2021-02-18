@@ -3,7 +3,7 @@ require_relative 'wagon'
 class CargoWagon < Wagon
   attr_reader :capacity, :occupied_capacity, :free_capacity
 
-  def initialize(capacity, type = 'Cargo')
+  def initialize(capacity, type = 'cargo')
     @capacity, @free_capacity = capacity, capacity
     @occupied_capacity = 0
     super(type)

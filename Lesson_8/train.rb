@@ -92,6 +92,17 @@ class Train
     false
   end
 
+  def all_wagons
+    wagons.each do |wagon|
+      if block_given?
+        yield(wagon)
+      else
+        puts "No block given"
+        break
+      end
+    end
+  end
+
   private
 
   attr_writer :speed, :station, :wagons
