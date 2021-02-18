@@ -218,8 +218,8 @@ class RailWays
       wagon_list
       wagon_actions(paint_menu WAGON_MENU)
     end
-    # reserve_capacity if command == 3
-    # reserve_seat if command == 4
+    cargo_wagon_reserve_capacity if command == 3
+    passenger_wagon_reserve_seats if command == 4
     main_menu if command == 0
   end
 
@@ -245,6 +245,20 @@ class RailWays
     puts "Вагон #{wagons[-1].type} создан, объем = #{wagons[-1].capacity}"
   end
 
+  def cargo_wagon_reserve_capacity #TODO защита от минусового объема в классе вагона
+    puts "Выберите вагон типа cargo!"
+    wagon = choose_from('Wagons', wagons)
+    if wagon.type == 'cargo'
+      puts "Сколько объема занять, укажите числовое значение!"
+      capacity = gets.chomp.to_i
+      wagon.take_capacity( capacity )
+      puts "Осталось объема #{wagon.free_capacity}"
+    else
+      puts "Вы выбрали не верный тип вагона = #{wagon.type}"
+    end
+    wagon_actions(paint_menu WAGON_MENU)
+  end
+
   def passenger_wagon_create
     puts "Укажите количество мест"
     value = gets.chomp.to_i
@@ -252,12 +266,32 @@ class RailWays
     puts "Вагон #{wagons[-1].type} создан, мест = #{wagons[-1].seats}"
   end
 
-  def wagon_list
-    puts "Список вагонов"
-    wagons.each_with_index { |wagon, index| puts "#{index} - тип:#{wagon.type}" }
+  def passenger_wagon_reserve_seats #TODO защита от минусового объема мест в классе вагона
+    puts "Выберите вагон типа passenger!"
+    wagon = choose_from('Wagons', wagons)
+    if wagon.type == 'passenger'
+      puts "Сколько мест занять, укажите числовое значение!"
+      seats = gets.chomp.to_i
+      wagon.take_seat( seats )
+      puts "Осталось мест #{wagon.free_seats}"
+    else
+      puts "Вы выбрали не верный тип вагона = #{wagon.type}"
+    end
+    wagon_actions(paint_menu WAGON_MENU)
   end
 
-  def seed #TODO классы смотрят в старые папки(переименовать там их)
+  def wagon_list
+    puts "Список вагонов"
+    wagons.each_with_index do |wagon, index|
+      if wagon.class == CargoWagon
+        puts "#{index} - Вагон типа #{wagon.type}, свободный объем: #{wagon.free_capacity}"
+      else
+        puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
+      end
+    end
+  end
+
+  def seed
     stations << Station.new('Астана')
     stations << Station.new('Алматы')
     stations << Station.new('Балхаш')

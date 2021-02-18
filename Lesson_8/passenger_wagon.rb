@@ -11,10 +11,10 @@ class PassengerWagon < Wagon
     validate!
   end
 
-  def take_seat
+  def take_seat(value)
     validate!
-    @free_seats -= 1
-    @occupied_seats +=1
+    self.free_seats -= value
+    self.occupied_seats += value
   end
 
   private
