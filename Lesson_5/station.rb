@@ -10,12 +10,6 @@ class StationOld5
     trains << train
   end
 
-  def trains_by_type # TODO
-    # puts "Количество поздов по типу:"
-    # puts "Грузовые #{train_info('Cargo')}"
-    # puts "Пассажирские #{train_info('Passenger')}"
-  end
-
   def departure (train)
     trains.delete(train)
   end
