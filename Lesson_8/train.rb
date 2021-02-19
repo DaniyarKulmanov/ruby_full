@@ -93,14 +93,7 @@ class Train
   end
 
   def all_wagons
-    wagons.each_with_index do |wagon, index|
-      if block_given?
-        yield(wagon, index)
-      else
-        puts "No block given"
-        break
-      end
-    end
+    wagons.each_with_index{ |wagon, index| yield(wagon,index) } if block_given?
   end
 
   private

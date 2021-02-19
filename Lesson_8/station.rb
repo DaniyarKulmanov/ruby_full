@@ -48,14 +48,7 @@ class Station
   end
 
   def all_trains
-    trains.each do |train|
-      if block_given?
-        yield(train)
-      else
-        puts "no block given"
-        break
-      end
-    end
+    trains.each{ |train| yield(train) } if block_given?
   end
 
   private
