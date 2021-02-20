@@ -31,7 +31,7 @@ module RailwaysData
     routes[0].add_station(stations[-1])
   end
 
-  def generate_trainsgit 
+  def generate_trains
     TRAIN_NAMES.each do |number|
       trains << CargoTrain.new(number)
       trains << PassengerTrain.new(number)
