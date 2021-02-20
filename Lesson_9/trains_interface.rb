@@ -24,7 +24,7 @@ module TrainsInterface
   end
 
   def train_display
-    train_list
+    trains_list
     train_actions(paint_menu(TRAIN_MENU))
   end
 
@@ -38,7 +38,7 @@ module TrainsInterface
     train_actions(paint_menu(TRAIN_MENU))
   end
 
-  def train_list
+  def trains_list
     puts 'Список поездов:'
     trains.each_with_index do |train, index|
       puts "#{index} - #{train.number} тип  #{train.class}"

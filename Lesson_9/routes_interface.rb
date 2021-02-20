@@ -26,9 +26,9 @@ module RoutesInterface
 
   def route_create
     puts 'Выберите начальную станцию'
-    first_station = choose_from( :stations, stations)
+    first_station = choose_from(:stations, stations)
     puts 'Выберите конечную станцию'
-    last_station = choose_from( :stations, stations)
+    last_station = choose_from(:stations, stations)
     routes << Route.new(first_station, last_station)
     route_actions(paint_menu(ROUTE_MENU))
   end

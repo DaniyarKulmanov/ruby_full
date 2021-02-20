@@ -13,10 +13,10 @@ class RailWays
   include RailwaysData
 
   VIEW = { stations: :stations_list,
-            routes: :routes_list,
-            trains: :trains_list,
-            cargo_wagons: :cargo_wagon_list,
-            passenger_wagons: :passenger_wagon_list}.freeze
+           routes: :routes_list,
+           trains: :trains_list,
+           cargo_wagons: :cargo_wagon_list,
+           passenger_wagons: :passenger_wagon_list }.freeze
 
   def initialize
     @stations = []
@@ -60,7 +60,7 @@ class RailWays
       break unless list[index].nil?
     end
     list[index]
-  # rescue NoMethodError
-  #   retry
+  rescue NoMethodError
+    retry
   end
 end
