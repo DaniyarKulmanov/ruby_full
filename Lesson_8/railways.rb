@@ -57,7 +57,7 @@ class RailWays
     list[index]
   end
 
-  def station_actions(command) #TODO добавить просмотр поездов через метод-блок
+  def station_actions(command)
     station_create if command == 1
      if command == 2
        stations_list
@@ -143,7 +143,7 @@ class RailWays
     route_actions(paint_menu ROUTE_MENU)
   end
 
-  def train_actions(command) #TODO добавить просмотр вагонов через метод-блок
+  def train_actions(command)
     train_create if command == 1
     if command == 2
       train_list

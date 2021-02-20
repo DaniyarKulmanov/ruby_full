@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 require_relative 'manufacturer'
 
@@ -5,7 +7,7 @@ class Wagon
   include InstanceCounter
   include Manufacturer
 
-  MADE_IN = /^(standard|cargo|passenger)/i
+  MADE_IN = /^(standard|cargo|passenger)/i.freeze
 
   attr_reader :open_locks, :type
 
@@ -27,7 +29,7 @@ class Wagon
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
@@ -38,5 +40,4 @@ class Wagon
   def validate!
     raise 'Тип поезда только standard, passenger, cargo' if type !~ MADE_IN
   end
-
 end

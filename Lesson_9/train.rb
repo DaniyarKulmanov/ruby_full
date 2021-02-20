@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 
@@ -5,7 +7,7 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  FORMAT = /^([а-я]|\d){3}[-]*([а-я]|\d){2}$/i
+  FORMAT = /^([а-я]|\d){3}-*([а-я]|\d){2}$/i.freeze
 
   attr_reader :speed, :station, :wagons, :wagon_type
   attr_accessor :number, :route, :station_index
@@ -13,7 +15,7 @@ class Train
   @@trains = []
 
   def self.find(number)
-    @@trains.find {|train| train.number == number}
+    @@trains.find { |train| train.number == number }
   end
 
   def initialize(number, wagon_type = 'standard')
@@ -35,22 +37,22 @@ class Train
   end
 
   def attach_wagon(wagon)
-    if speed == 0 && wagon_type == wagon.type
-      self.wagons << wagon
+    if speed.zero? && wagon_type == wagon.type
+      wagons << wagon
     else
       puts "Остановите поезд и прицепить можно только вагоны = #{wagon_type}"
     end
   end
 
   def unhitch_wagon
-    if speed == 0 && wagons.size > 0
-      self.wagons.delete_at(-1)
+    if speed.zero? && wagons.size.positive?
+      wagons.delete_at(-1)
     elsif wagons.size <= 0
       puts 'Нет Вагонов для отцепления'
     end
   end
 
-  def add_route (route)
+  def add_route(route)
     self.route = route
     self.station = route.stations.first
     station.arrive(self)
@@ -58,42 +60,42 @@ class Train
   end
 
   def move_forward
-    if route != nil && route.stations.last != station
+    if !route.nil? && route.stations.last != station
       self.station_index += 1
       travel
     elsif route.nil?
-      puts "Сначала назначьте маршут поезду"
+      puts 'Сначала назначьте маршут поезду'
     else
-      puts "Это последняя станция, можно двигаться только назад"
+      puts 'Это последняя станция, можно двигаться только назад'
     end
   end
 
   def move_back
-    if route != nil && route.stations.first != station
+    if !route.nil? && route.stations.first != station
       self.station_index -= 1
       travel
     elsif route.nil?
-      puts "Сначала назначьте маршут поезду"
+      puts 'Сначала назначьте маршут поезду'
     else
-      puts "Это первая станция, можно двигаться только вперед"
+      puts 'Это первая станция, можно двигаться только вперед'
     end
   end
 
   def information
-    station_read((station_index - 1), "предыдущая станция") if station_index > 0
-    station_read(station_index, "текущая станция")
-    station_read((station_index + 1), "следующая станция")
+    station_read((station_index - 1), 'предыдущая станция') if station_index.positive?
+    station_read(station_index, 'текущая станция')
+    station_read((station_index + 1), 'следующая станция')
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
-  def all_wagons
-    wagons.each_with_index{ |wagon, index| yield(wagon,index) } if block_given?
+  def all_wagons(&block)
+    wagons.each_with_index(&block) if block_given?
   end
 
   private
