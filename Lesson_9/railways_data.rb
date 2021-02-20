@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
+require_relative 'stations_interface'
+require_relative 'routes_interface'
+require_relative 'wagons_interface'
+require_relative 'trains_interface'
+require_relative 'menu_texts'
+
 module RailwaysData
+  include StationInterface
+  include RoutesInterface
+  include WagonsInterface
+  include TrainsInterface
+
+  private
+
   def seed
     generate_stations
     generate_routes
@@ -18,7 +31,7 @@ module RailwaysData
     routes[0].add_station(stations[-1])
   end
 
-  def generate_trains
+  def generate_trainsgit 
     TRAIN_NAMES.each do |number|
       trains << CargoTrain.new(number)
       trains << PassengerTrain.new(number)

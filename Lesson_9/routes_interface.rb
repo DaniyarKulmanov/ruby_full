@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module RoutesInterface
+  attr_reader :routes
+
+  private
+
+  attr_writer :routes
+
   def route_actions(command)
     route_create if command == 1
     if command == 2

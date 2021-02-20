@@ -8,17 +8,9 @@ require_relative 'route'
 require_relative 'station'
 require_relative 'menu_texts'
 require_relative 'railways_data'
-require_relative 'stations_interface'
-require_relative 'routes_interface'
-require_relative 'wagons_interface'
 
 class RailWays
   include RailwaysData
-  include StationInterface
-  include RoutesInterface
-  include WagonsInterface
-
-  attr_reader :routes, :stations, :trains, :wagons
 
   def initialize
     @stations = []
@@ -39,8 +31,6 @@ class RailWays
   end
 
   private
-
-  attr_writer :routes, :stations, :trains, :wagons
 
   def paint_menu(list_actions)
     command = 0

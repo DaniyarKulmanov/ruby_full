@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module StationInterface
+  attr_reader :stations
+
+  private
+
+  attr_writer :stations
+
   def station_actions(command)
     station_create if command == 1
     if command == 2

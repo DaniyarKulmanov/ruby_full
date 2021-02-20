@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module TrainsInterface
+  attr_reader :trains
+
+  private
+
+  attr_writer :trains
+
   def train_actions(command)
     train_create if command == 1
     if command == 2

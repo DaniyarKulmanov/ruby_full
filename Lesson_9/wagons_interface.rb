@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module WagonsInterface
+  attr_reader :wagons
+
+  private
+
+  attr_writer :wagons
+
   def wagon_actions(command)
     wagon_create if command == 1
     if command == 2
