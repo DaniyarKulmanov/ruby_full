@@ -7,8 +7,11 @@ require_relative 'cargo_wagon'
 require_relative 'route'
 require_relative 'station'
 require_relative 'menu_texts'
+require_relative 'railways_data'
 
 class RailWays
+  include RailwaysData
+
   attr_reader :routes, :stations, :trains, :wagons
 
   def initialize
@@ -316,22 +319,6 @@ class RailWays
       else
         puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
       end
-    end
-  end
-
-  def seed
-    stations << Station.new('Астана')
-    stations << Station.new('Алматы')
-    stations << Station.new('Балхаш')
-    routes << Route.new(stations[0], stations[1])
-    routes[0].add_station(stations[-1])
-    trains << CargoTrain.new('ППШ-16')
-    trains << PassengerTrain.new('АТА12')
-    trains[0].add_route(routes[0])
-    7.times { wagons << CargoWagon.new(rand(100..500), 'cargo') }
-    6.times { wagons << PassengerWagon.new(rand(300), 'passenger') }
-    trains.each do |train|
-      wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
     end
   end
 end
