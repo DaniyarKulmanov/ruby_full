@@ -12,11 +12,18 @@ require_relative 'railways_data'
 class RailWays
   include RailwaysData
 
+  VIEW = { stations: :stations_list,
+            routes: :routes_list,
+            trains: :trains_list,
+            cargo_wagons: :cargo_wagon_list,
+            passenger_wagons: :passenger_wagon_list}.freeze
+
   def initialize
     @stations = []
     @routes = []
     @trains = []
-    @wagons = []
+    @cargo_wagons = []
+    @passenger_wagons = []
     seed
   end
 
@@ -48,13 +55,12 @@ class RailWays
   def choose_from(variant, list)
     index = nil
     loop do
-      stations_list if variant == 'Stations'
-      routes_list if variant == 'Routes'
-      train_list if variant == 'Trains'
-      wagon_list if variant == 'Wagons'
+      send VIEW[variant]
       index = gets.chomp.to_i
       break unless list[index].nil?
     end
     list[index]
+  # rescue NoMethodError
+  #   retry
   end
 end

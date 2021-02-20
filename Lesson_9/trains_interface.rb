@@ -30,7 +30,7 @@ module TrainsInterface
 
   def train_processing
     attempt ||= 3
-    train_create
+    train_get_data
   rescue RuntimeError => e
     attempt -= 1
     puts "#{e.message}, осталось попыток #{attempt}"
@@ -49,45 +49,46 @@ module TrainsInterface
 
   def train_add_route
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
+    train = choose_from(:trains, trains)
     puts 'Выберите маршрут'
-    route = choose_from('Routes', routes)
+    route = choose_from(:routes, routes)
     train.add_route(route)
     train_actions(paint_menu(TRAIN_MENU))
   end
 
   def train_add_wagon
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
-    wagon = choose_from('Wagons', wagons)
+    train = choose_from(:trains, trains)
+    wagon = choose_from(:cargo_wagons, cargo_wagons) if train.wagon_type == 'cargo'
+    wagon = choose_from(:passenger_wagons, passenger_wagons) if train.wagon_type == 'passenger'
     train.attach_wagon(wagon)
     train_actions(paint_menu(TRAIN_MENU))
   end
 
   def train_del_wagon
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
+    train = choose_from(:trains, trains)
     train.unhitch_wagon
     train_actions(paint_menu(TRAIN_MENU))
   end
 
   def train_travel_forward
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
+    train = choose_from(:trains, trains)
     train.move_forward
     train_actions(paint_menu(TRAIN_MENU))
   end
 
   def train_travel_back
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
+    train = choose_from(:trains, trains)
     train.move_back
     train_actions(paint_menu(TRAIN_MENU))
   end
 
   def train_wagons_display
     puts 'Выберите поезд'
-    train = choose_from('Trains', trains)
+    train = choose_from(:trains, trains)
     puts "Список вагонов поезда #{train.number}:"
     train.all_wagons do |wagon, index|
       puts "#{index} тип #{wagon.type}, вместимость #{wagon.capacity}, свободный объем #{wagon.free_capacity}"
@@ -95,11 +96,15 @@ module TrainsInterface
     train_actions(paint_menu(TRAIN_MENU))
   end
 
-  def train_create
+  def train_get_data
     puts 'Введите номер поезда'
     number = gets.chomp
     puts TRAIN_WAGON_TYPE
     type = gets.chomp.to_i
+    train_create(number, type)
+  end
+
+  def train_create(number, type)
     trains << CargoTrain.new(number) if type == 1
     trains << PassengerTrain.new(number) if type == 2
     puts "Поезд #{trains[-1].number} создан"

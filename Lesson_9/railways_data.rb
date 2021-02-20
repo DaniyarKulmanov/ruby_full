@@ -40,13 +40,14 @@ module RailwaysData
   end
 
   def generate_wagons
-    7.times { wagons << CargoWagon.new(rand(100..500), 'cargo') }
-    6.times { wagons << PassengerWagon.new(rand(300), 'passenger') }
+    7.times { cargo_wagons << CargoWagon.new(rand(100..500), 'cargo') }
+    6.times { passenger_wagons << PassengerWagon.new(rand(300), 'passenger') }
   end
 
   def assign_wagons_to_trains
     trains.each do |train|
-      wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
+      cargo_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
+      passenger_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
     end
   end
 end

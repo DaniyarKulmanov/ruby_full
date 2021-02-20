@@ -7,11 +7,11 @@ module WagonsInterface
             3 => :cargo_wagon_reserve_capacity,
             4 => :passenger_wagon_reserve_seats }.freeze
 
-  attr_reader :wagons
+  attr_reader :cargo_wagons, :passenger_wagons
 
   private
 
-  attr_writer :wagons
+  attr_writer :cargo_wagons, :passenger_wagons
 
   def wagon_actions(command)
     send WAGON[command]
@@ -30,66 +30,70 @@ module WagonsInterface
   end
 
   def wagon_display
-    wagon_list
+    cargo_wagon_list
+    passenger_wagon_list
     wagon_actions(paint_menu(WAGON_MENU))
   end
 
   def cargo_wagon_create
     puts 'Укажите объем'
     value = gets.chomp.to_i
-    wagons << CargoWagon.new(value)
+    cargo_wagons << CargoWagon.new(value)
     puts "Вагон #{wagons[-1].type} создан, объем = #{wagons[-1].capacity}"
   end
 
   def cargo_wagon_reserve_capacity
-    puts 'Выберите вагон типа cargo!'
-    wagon = choose_from('Wagons', wagons)
-    if wagon.type == 'cargo'
-      puts 'Сколько объема занять, укажите числовое значение!'
-      capacity = gets.chomp.to_i
-      wagon.take_capacity(capacity)
-      puts "Осталось объема #{wagon.free_capacity}"
-    else
-      puts "Вы выбрали не верный тип вагона = #{wagon.type}"
-    end
+    puts 'Выберите вагон.'
+    wagon = choose_from(:cargo_wagons, cargo_wagons)
+    reserve_capacity(wagon)
     wagon_actions(paint_menu(WAGON_MENU))
   rescue RuntimeError => e
     puts e.message
     wagon_actions(paint_menu(WAGON_MENU))
+  end
+
+  def reserve_capacity(wagon)
+    puts 'Сколько объема занять, укажите числовое значение!'
+    capacity = gets.chomp.to_i
+    wagon.take_capacity(capacity)
+    puts "Осталось объема #{wagon.free_capacity}"
   end
 
   def passenger_wagon_create
     puts 'Укажите количество мест'
     value = gets.chomp.to_i
-    wagons << PassengerWagon.new(value)
+    passenger_wagons << PassengerWagon.new(value)
     puts "Вагон #{wagons[-1].type} создан, мест = #{wagons[-1].seats}"
   end
 
   def passenger_wagon_reserve_seats
     puts 'Выберите вагон типа passenger!'
-    wagon = choose_from('Wagons', wagons)
-    if wagon.type == 'passenger'
-      puts 'Сколько мест занять, укажите числовое значение!'
-      seats = gets.chomp.to_i
-      wagon.take_seat(seats)
-      puts "Осталось мест #{wagon.free_seats}"
-    else
-      puts "Вы выбрали не верный тип вагона = #{wagon.type}"
-    end
+    wagon = choose_from(:passenger_wagons, passenger_wagons)
+    reserve_seat(wagon)
     wagon_actions(paint_menu(WAGON_MENU))
   rescue RuntimeError => e
     puts e.message
     wagon_actions(paint_menu(WAGON_MENU))
   end
 
-  def wagon_list
-    puts 'Список вагонов'
-    wagons.each_with_index do |wagon, index|
-      if wagon.instance_of?(CargoWagon)
-        puts "#{index} - Вагон типа #{wagon.type}, свободный объем: #{wagon.free_capacity}"
-      else
-        puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
-      end
+  def reserve_seat(wagon)
+    puts 'Сколько мест занять, укажите числовое значение!'
+    seats = gets.chomp.to_i
+    wagon.take_seat(seats)
+    puts "Осталось мест #{wagon.free_seats}"
+  end
+
+  def cargo_wagon_list
+    puts 'Список грузовых вагонов'
+    cargo_wagons.each_with_index do |wagon, index|
+      puts "#{index} - Вагон типа #{wagon.type}, свободный объем: #{wagon.free_capacity}"
+    end
+  end
+
+  def passenger_wagon_list
+    puts 'Список пассажирских вагонов'
+    passenger_wagons.each_with_index do |wagon, index|
+      puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
     end
   end
 

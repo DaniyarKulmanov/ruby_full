@@ -38,7 +38,7 @@ module StationInterface
 
   def station_trains_display
     puts 'Выберите станцию'
-    station = choose_from('Stations', stations)
+    station = choose_from( :stations, stations)
     puts "Список поездов на станции #{station.name}:"
     station.all_trains { |train| puts "Номер поезда - #{train.number}, вагонов #{train.wagons.size}" }
     station_actions(paint_menu(STATION_MENU))

@@ -26,9 +26,9 @@ module RoutesInterface
 
   def route_create
     puts 'Выберите начальную станцию'
-    first_station = choose_from('Stations', stations)
+    first_station = choose_from( :stations, stations)
     puts 'Выберите конечную станцию'
-    last_station = choose_from('Stations', stations)
+    last_station = choose_from( :stations, stations)
     routes << Route.new(first_station, last_station)
     route_actions(paint_menu(ROUTE_MENU))
   end
@@ -43,18 +43,18 @@ module RoutesInterface
 
   def routes_add_station
     puts 'Выберите маршрут куда хотите добавить станцию:'
-    route = choose_from('Routes', routes)
+    route = choose_from(:routes, routes)
     puts 'Какую станцию добавить'
-    station = choose_from('Stations', stations)
+    station = choose_from(:stations, stations)
     route.add_station(station)
     route_actions(paint_menu(ROUTE_MENU))
   end
 
   def routes_del_station
     puts 'Выберите маршрут где хотите удалить станцию:'
-    route = choose_from('Routes', routes)
+    route = choose_from(:routes, routes)
     puts 'Какую станцию удалить'
-    station = choose_from('Stations', stations)
+    station = choose_from(:stations, stations)
     route.remove_station(station)
     route_actions(paint_menu(ROUTE_MENU))
   end
