@@ -9,17 +9,21 @@ class Station
 
   attr_reader :name, :trains
 
-  @@stations = []
+  @stations = []
+
+  class << self
+    attr_accessor :stations
+  end
 
   def self.all
-    puts @@stations
+    puts stations
   end
 
   def initialize(name)
     @name = name
     validate!
     @trains = []
-    @@stations << self
+    self.class.stations << self
     register_instance
   end
 
