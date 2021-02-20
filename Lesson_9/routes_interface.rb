@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module RoutesInterface
+  ROUTE = { 0 => :main_menu,
+            1 => :route_create,
+            2 => :route_display,
+            3 => :routes_add_station,
+            4 => :routes_del_station }.freeze
+
   attr_reader :routes
 
   private
@@ -8,14 +14,14 @@ module RoutesInterface
   attr_writer :routes
 
   def route_actions(command)
-    route_create if command == 1
-    if command == 2
-      routes_list
-      route_actions(paint_menu(ROUTE_MENU))
-    end
-    routes_add_station if command == 3
-    routes_del_station if command == 4
-    main_menu if command.zero?
+    send ROUTE[command]
+  rescue NoMethodError
+    retry
+  end
+
+  def route_display
+    routes_list
+    route_actions(paint_menu(ROUTE_MENU))
   end
 
   def route_create

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module WagonsInterface
+  WAGON = { 0 => :main_menu,
+            1 => :wagon_processing,
+            2 => :wagon_display,
+            3 => :cargo_wagon_reserve_capacity,
+            4 => :passenger_wagon_reserve_seats }.freeze
+
   attr_reader :wagons
 
   private
@@ -8,28 +14,23 @@ module WagonsInterface
   attr_writer :wagons
 
   def wagon_actions(command)
-    wagon_create if command == 1
-    if command == 2
-      wagon_list
-      wagon_actions(paint_menu(WAGON_MENU))
-    end
-    cargo_wagon_reserve_capacity if command == 3
-    passenger_wagon_reserve_seats if command == 4
-    main_menu if command.zero?
+    send WAGON[command]
+  rescue NoMethodError
+    retry
   end
 
-  def wagon_create
+  def wagon_processing
     attempt ||= 3
-    puts 'Какой вагон создать'
-    puts TRAIN_WAGON_TYPE
-    type = gets.chomp.to_i
-    cargo_wagon_create if type == 1
-    passenger_wagon_create if type == 2
-    wagon_actions(paint_menu(WAGON_MENU))
+    wagon_create
   rescue RuntimeError => e
     attempt -= 1
     puts "#{e.message}, осталось попыток #{attempt}"
     retry if attempt.positive?
+    wagon_actions(paint_menu(WAGON_MENU))
+  end
+
+  def wagon_display
+    wagon_list
     wagon_actions(paint_menu(WAGON_MENU))
   end
 
@@ -90,5 +91,14 @@ module WagonsInterface
         puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
       end
     end
+  end
+
+  def wagon_create
+    puts 'Какой вагон создать'
+    puts TRAIN_WAGON_TYPE
+    type = gets.chomp.to_i
+    cargo_wagon_create if type == 1
+    passenger_wagon_create if type == 2
+    wagon_actions(paint_menu(WAGON_MENU))
   end
 end

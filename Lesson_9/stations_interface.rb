@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module StationInterface
+  STATION = { 0 => :main_menu,
+              1 => :station_processing,
+              2 => :station_display,
+              3 => :station_trains_display }.freeze
+
   attr_reader :stations
 
   private
@@ -8,22 +13,14 @@ module StationInterface
   attr_writer :stations
 
   def station_actions(command)
-    station_create if command == 1
-    if command == 2
-      stations_list
-      station_actions(paint_menu(STATION_MENU))
-    end
-    station_trains_display if command == 3
-    main_menu if command.zero?
+    send STATION[command]
+  rescue NoMethodError
+    retry
   end
 
-  def station_create
+  def station_processing
     attempt ||= 3
-    puts 'Введите имя станции'
-    name = gets.chomp
-    stations << Station.new(name)
-    puts "Станция #{stations[-1].name} создана"
-    station_actions(paint_menu(STATION_MENU))
+    station_create
   rescue RuntimeError => e
     attempt -= 1
     puts "#{e.message}, осталось попыток #{attempt}"
@@ -44,6 +41,19 @@ module StationInterface
     station = choose_from('Stations', stations)
     puts "Список поездов на станции #{station.name}:"
     station.all_trains { |train| puts "Номер поезда - #{train.number}, вагонов #{train.wagons.size}" }
+    station_actions(paint_menu(STATION_MENU))
+  end
+
+  def station_create
+    puts 'Введите имя станции'
+    name = gets.chomp
+    stations << Station.new(name)
+    puts "Станция #{stations[-1].name} создана"
+    station_actions(paint_menu(STATION_MENU))
+  end
+
+  def station_display
+    stations_list
     station_actions(paint_menu(STATION_MENU))
   end
 end
