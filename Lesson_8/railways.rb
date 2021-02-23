@@ -49,7 +49,7 @@ class RailWays
     loop do
       stations_list if variant == 'Stations'
       routes_list if variant == 'Routes'
-      train_list if variant == 'Trains'
+      trains_list if variant == 'Trains'
       wagon_list if variant == 'Wagons'
       index = gets.chomp.to_i
       break unless list[index].nil?
@@ -58,7 +58,7 @@ class RailWays
   end
 
   def station_actions(command)
-    station_create if command == 1
+    station_processing if command == 1
      if command == 2
        stations_list
        station_actions(paint_menu STATION_MENU)
@@ -67,7 +67,7 @@ class RailWays
     main_menu if command == 0
   end
 
-  def station_create
+  def station_processing
     attempt ||= 3
     puts "Введите имя станции"
     name = gets.chomp
@@ -144,9 +144,9 @@ class RailWays
   end
 
   def train_actions(command)
-    train_create if command == 1
+    train_processing if command == 1
     if command == 2
-      train_list
+      trains_list
       train_actions(paint_menu TRAIN_MENU)
     end
     train_add_route if command == 3
@@ -158,7 +158,7 @@ class RailWays
     main_menu if command == 0
   end
 
-  def train_create
+  def train_processing
     attempt ||= 3
     puts "Введите номер поезда"
     number = gets.chomp
@@ -175,7 +175,7 @@ class RailWays
     train_actions(paint_menu TRAIN_MENU)
   end
 
-  def train_list
+  def trains_list
     puts "Список поездов:"
     trains.each_with_index do |train, index|
       puts "#{index} - #{train.number} тип  #{train.class.to_s}"
@@ -233,7 +233,7 @@ class RailWays
   end
 
   def wagon_actions(command)
-    wagon_create if command == 1
+    wagon_processing if command == 1
     if command == 2
       wagon_list
       wagon_actions(paint_menu WAGON_MENU)
@@ -243,7 +243,7 @@ class RailWays
     main_menu if command == 0
   end
 
-  def wagon_create
+  def wagon_processing
     attempt ||= 3
     puts "Какой вагон создать"
     puts TRAIN_WAGON_TYPE
