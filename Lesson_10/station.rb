@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'accessors'
 
 class Station
   include InstanceCounter
+  extend Accessors
 
   FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/.freeze
 
   attr_reader :name, :trains
+  attr_accessor_with_history :chief
 
   @stations = []
 
@@ -19,8 +22,9 @@ class Station
     puts stations
   end
 
-  def initialize(name)
+  def initialize(name, chief)
     @name = name
+    @chief = chief
     validate!
     @trains = []
     self.class.stations << self

@@ -31,8 +31,7 @@ module StationInterface
   def stations_list
     puts 'Список станций:'
     stations.each_with_index do |station, index|
-      puts "#{index} - #{station.name} поезда:"
-      station.trains.each_with_index { |train, train_index| puts " #{train_index} -> #{train.number}" }
+      station_details(station, index)
     end
   end
 
@@ -55,5 +54,12 @@ module StationInterface
   def station_display
     stations_list
     station_actions(paint_menu(STATION_MENU))
+  end
+
+  def station_details(station, index)
+    puts "№#{index} Станция #{station.name}, Шеф #{station.chief}, поезда:"
+    station.trains.each_with_index { |train, train_index| puts " #{train_index} -> #{train.number}" }
+    puts "Кто управлял станциями:"
+    puts station.chief_history
   end
 end

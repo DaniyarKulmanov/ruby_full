@@ -20,10 +20,11 @@ module RailwaysData
     generate_trains
     generate_wagons
     assign_wagons_to_trains
+    generate_chiefs
   end
 
   def generate_stations
-    STATION_NAMES.each { |name| stations << Station.new(name) }
+    STATION_NAMES.each { |name| stations << Station.new(name, CHIEF_NAMES.sample) }
   end
 
   def generate_routes
@@ -49,5 +50,9 @@ module RailwaysData
       cargo_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
       passenger_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
     end
+  end
+
+  def generate_chiefs
+    rand(10).times { stations.each{ |station| station.chief = CHIEF_NAMES.sample } }
   end
 end
