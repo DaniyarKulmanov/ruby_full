@@ -41,10 +41,16 @@ module TrainsInterface
   def trains_list
     puts 'Список поездов:'
     trains.each_with_index do |train, index|
-      puts "#{index} - #{train.number} тип  #{train.class}"
-      puts "текущая станция #{train.station.name}" unless train.station.nil?
-      puts "вагонов -> #{train.wagons.size}"
+      train_details(train, index)
     end
+  end
+
+  def train_details(train, index)
+    puts "#{index} - #{train.number} тип  #{train.class}, шеф поезда #{train.chief}"
+    puts "текущая станция #{train.station.name}" unless train.station.nil?
+    puts "вагонов -> #{train.wagons.size}"
+    puts 'доска почета:'
+    puts train.chief_history
   end
 
   def train_add_route

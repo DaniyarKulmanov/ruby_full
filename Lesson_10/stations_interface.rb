@@ -59,7 +59,7 @@ module StationInterface
   def station_details(station, index)
     puts "№#{index} Станция #{station.name}, Шеф #{station.chief}, поезда:"
     station.trains.each_with_index { |train, train_index| puts " #{train_index} -> #{train.number}" }
-    puts "Кто управлял станциями:"
+    puts 'Кто управлял станциями:'
     puts station.chief_history
   end
 end

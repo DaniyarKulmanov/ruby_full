@@ -10,6 +10,7 @@ class Station
   FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/.freeze
 
   attr_reader :name, :trains
+
   attr_accessor_with_history :chief
 
   @stations = []

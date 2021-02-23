@@ -53,6 +53,9 @@ module RailwaysData
   end
 
   def generate_chiefs
-    rand(10).times { stations.each{ |station| station.chief = CHIEF_NAMES.sample } }
+    rand(10).times do
+      stations.each { |station| station.chief = CHIEF_NAMES.sample }
+      trains.each { |train| train.chief = CHIEF_NAMES.sample }
+    end
   end
 end

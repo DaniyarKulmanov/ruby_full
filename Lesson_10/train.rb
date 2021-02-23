@@ -2,15 +2,19 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'accessors'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  extend Accessors
 
   FORMAT = /^([а-я]|\d){3}-*([а-я]|\d){2}$/i.freeze
 
   attr_reader :speed, :station, :wagons, :wagon_type
   attr_accessor :number, :route, :station_index
+
+  attr_accessor_with_history :chief
 
   @trains = []
 
