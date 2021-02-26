@@ -27,7 +27,7 @@ class Station
 
   def initialize(name, chief)
     @name = name
-    @chief = chief
+    self.chief = chief
     validate!
     @trains = []
     self.class.stations << self

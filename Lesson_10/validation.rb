@@ -1,24 +1,23 @@
+# frozen_string_literal: true
+
 module Validation
   def self.included(base)
     base.extend(ClassMethods)
   end
 
   module ClassMethods
-
-    def validate(name, check_method, *args)
-
-    end
+    def validate(name, check_method, *args); end
 
     private
 
     def validate!(name, check_method, *args)
-      variable = self.instance_variable_get("@#{name}")
-      send(check_method, name, variable, args[0] )
+      variable = instance_variable_get("@#{name}")
+      send(check_method, name, variable, args[0])
     rescue NoMethodError => e
       puts e.message
     end
 
-    def presence(name, variable, args = nil)
+    def presence(name, variable, _args = nil)
       raise "Пустое значение атрибута #{name}" if variable.nil?
     end
 
@@ -30,5 +29,4 @@ module Validation
       raise "Не верный тип атрибута #{name} = #{variable.class}" if variable.class != type
     end
   end
-
 end
