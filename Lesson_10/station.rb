@@ -2,10 +2,12 @@
 
 require_relative 'instance_counter'
 require_relative 'accessors'
+require_relative 'validation'
 
 class Station
   include InstanceCounter
   extend Accessors
+  include Validation
 
   FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/.freeze
 
@@ -60,6 +62,11 @@ class Station
 
   def all_trains(&block)
     trains.each(&block) if block_given?
+  end
+
+  def test_validation
+    validate :name, :presence
+    validate :name, :type, String
   end
 
   private
