@@ -5,8 +5,8 @@ require_relative 'accessors'
 require_relative 'validation'
 
 class Station
-  include InstanceCounter
   extend Accessors
+  include InstanceCounter
   include Validation
 
   FORMAT = /(\A[А-Я])([а-я]|\d){3,80}$/.freeze

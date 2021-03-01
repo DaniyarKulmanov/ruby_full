@@ -3,11 +3,13 @@
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 require_relative 'accessors'
+require_relative 'validation'
 
 class Train
+  extend Accessors
   include Manufacturer
   include InstanceCounter
-  extend Accessors
+  include Validation
 
   FORMAT = /^([а-я]|\d){3}-*([а-я]|\d){2}$/i.freeze
 
@@ -15,6 +17,8 @@ class Train
   attr_accessor :number, :route, :station_index
 
   attr_accessor_with_history :chief
+
+  validate :number, :format, FORMAT
 
   @trains = []
 
@@ -45,7 +49,7 @@ class Train
   end
 
   def attach_wagon(wagon)
-    if speed.zero? && wagon_type == wagon.type
+    if speed.zero? && wagon_type == wagon.model
       wagons << wagon
     else
       puts "Остановите поезд и прицепить можно только вагоны = #{wagon_type}"
@@ -95,13 +99,6 @@ class Train
     station_read((station_index + 1), 'следующая станция')
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   def all_wagons(&block)
     wagons.each_with_index(&block) if block_given?
   end
@@ -118,9 +115,5 @@ class Train
     station.departure(self)
     self.station = route.stations[station_index]
     route.stations[station_index].arrive(self)
-  end
-
-  def validate!
-    raise 'Не верный формат позда ХХХ-ХХ' if number !~ FORMAT
   end
 end

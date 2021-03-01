@@ -51,8 +51,8 @@ module RailwaysData
 
   def assign_wagons_to_trains
     trains.each do |train|
-      cargo_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
-      passenger_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.type }
+      cargo_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.model }
+      passenger_wagons.each { |wagon| train.attach_wagon(wagon) if train.wagon_type == wagon.model }
     end
   end
 

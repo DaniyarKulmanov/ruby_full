@@ -39,7 +39,7 @@ module WagonsInterface
     puts 'Укажите объем'
     value = gets.chomp.to_i
     cargo_wagons << CargoWagon.new(value)
-    puts "Вагон #{wagons[-1].type} создан, объем = #{wagons[-1].capacity}"
+    puts "Вагон #{wagons[-1].model} создан, объем = #{wagons[-1].capacity}"
   end
 
   def cargo_wagon_reserve_capacity
@@ -63,7 +63,7 @@ module WagonsInterface
     puts 'Укажите количество мест'
     value = gets.chomp.to_i
     passenger_wagons << PassengerWagon.new(value)
-    puts "Вагон #{wagons[-1].type} создан, мест = #{wagons[-1].seats}"
+    puts "Вагон #{wagons[-1].model} создан, мест = #{wagons[-1].seats}"
   end
 
   def passenger_wagon_reserve_seats
@@ -86,14 +86,14 @@ module WagonsInterface
   def cargo_wagon_list
     puts 'Список грузовых вагонов'
     cargo_wagons.each_with_index do |wagon, index|
-      puts "#{index} - Вагон типа #{wagon.type}, свободный объем: #{wagon.free_capacity}"
+      puts "#{index} - Вагон типа #{wagon.model}, свободный объем: #{wagon.free_capacity}"
     end
   end
 
   def passenger_wagon_list
     puts 'Список пассажирских вагонов'
     passenger_wagons.each_with_index do |wagon, index|
-      puts "#{index} - Вагон типа #{wagon.type} свободных мест: #{wagon.free_seats}"
+      puts "#{index} - Вагон типа #{wagon.model} свободных мест: #{wagon.free_seats}"
     end
   end
 

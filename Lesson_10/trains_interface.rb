@@ -97,7 +97,7 @@ module TrainsInterface
     train = choose_from(:trains, trains)
     puts "Список вагонов поезда #{train.number}:"
     train.all_wagons do |wagon, index|
-      puts "#{index} тип #{wagon.type}, вместимость #{wagon.capacity}, свободный объем #{wagon.free_capacity}"
+      puts "#{index} тип #{wagon.model}, вместимость #{wagon.capacity}, свободный объем #{wagon.free_capacity}"
     end
     train_actions(paint_menu(TRAIN_MENU))
   end

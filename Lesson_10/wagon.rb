@@ -2,17 +2,21 @@
 
 require_relative 'instance_counter'
 require_relative 'manufacturer'
+require_relative 'validation'
 
 class Wagon
   include InstanceCounter
   include Manufacturer
+  include Validation
 
   MADE_IN = /^(standard|cargo|passenger)/i.freeze
 
-  attr_reader :open_locks, :type
+  attr_reader :open_locks, :model
 
-  def initialize(type = 'standard')
-    @type = type
+  validate :type, :format, MADE_IN
+
+  def initialize(model = 'standard')
+    @model = model
     validate!
     close_doors
     register_instance
@@ -26,18 +30,7 @@ class Wagon
     self.open_locks = false
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   private
 
   attr_writer :open_locks
-
-  def validate!
-    raise 'Тип поезда только standard, passenger, cargo' if type !~ MADE_IN
-  end
 end
