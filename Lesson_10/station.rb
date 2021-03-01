@@ -16,6 +16,10 @@ class Station
   attr_accessor_with_history :chief
   strong_attr_accessor :town, String
 
+  validate :name, :presence
+  validate :name, :type, String
+  validate :name, :format, FORMAT
+
   @stations = []
 
   class << self
@@ -26,7 +30,7 @@ class Station
     puts stations
   end
 
-  def initialize(name, chief = '' , town = '')
+  def initialize(name, chief = '', town = '')
     @name = name
     self.town = town
     self.chief = chief
@@ -55,25 +59,7 @@ class Station
     trains.delete(train)
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
   def all_trains(&block)
     trains.each(&block) if block_given?
-  end
-
-  def test_validation
-    validate :name, :presence
-    validate :name, :type, String
-  end
-
-  private
-
-  def validate!
-    raise 'Не верный формат: только кириллица, цифры, длинна от 3 - 80 символов' if name !~ FORMAT
   end
 end
