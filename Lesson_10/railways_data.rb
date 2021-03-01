@@ -24,7 +24,11 @@ module RailwaysData
   end
 
   def generate_stations
-    STATION_NAMES.each { |name| stations << Station.new(name, CHIEF_NAMES.sample) }
+    STATION_NAMES.each do |name|
+      chief = CHIEF_NAMES.sample
+      town = TOWN_NAMES.sample
+      stations << Station.new(name, chief, town)
+    end
   end
 
   def generate_routes

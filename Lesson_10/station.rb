@@ -14,6 +14,7 @@ class Station
   attr_reader :name, :trains
 
   attr_accessor_with_history :chief
+  strong_attr_accessor :town, String
 
   @stations = []
 
@@ -25,8 +26,9 @@ class Station
     puts stations
   end
 
-  def initialize(name, chief)
+  def initialize(name, chief = '' , town = '')
     @name = name
+    self.town = town
     self.chief = chief
     validate!
     @trains = []
